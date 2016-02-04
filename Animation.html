@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<link rel="stylesheet" type"text/css" href="main.css">
+<link rel="stylesheet" href="w3.css">
+<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+<style>
+#contentBox {
+	width:100%;
+	height:100%;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+</style>
+</head>
+<body>
+<div class="contentBox" id="contentBox">
+ <svg id="svg1" width="100%" height="100%"</svg>
+</div>
+<script src="lib/d3.min.js"></script>
+<script src ="lib/ryb-color-mixer.js"></script>
+<script>
+var graph = [];
+var node = [];
+var link = [];
+var force;
+var svg1=d3.select("#svg1");
+
+svg1.attr("preserveAspectRatio", "xMinYMin meet")
+   .attr("viewBox", "0 0 750 550")
+   //class to make it responsive
+   .classed("svg-content-responsive", true); 
+
+var nodes = [],
+    links = [];
+
+var force = d3.layout.force()
+    .nodes(nodes)
+    .links(links)
+    .charge(-400)
+    .linkDistance(120)
+    .size([d3.select("#svg1").style("width"), d3.select("#svg1").style("height")])
+    .on("tick", tick);
+	
+var node = svg1.selectAll(".node"),
+    link = svg1.selectAll(".link");   
+	
+setTimeout(function() {
+  for(var i = 0; i < 10; i++){
+    var a = {"id" : 0, "cx": 650, "cy": 150, "color": "#ff0000"},
+    b = {"id" : 1, "cx": 150, "cy": 220, "color": "#00ff00"},
+    c = {"id" : 2, "cx": 350, "cy": 85, "color": "#002fff"},
+    d = {"id" : 3, "cx": 650, "cy": 425, "color": "#ffff00"},
+    e = {"id" : 4, "cx": 450, "cy": 350, "color": "#00ffff"},
+    f = {"id" : 5, "cx": 350, "cy": 250, "color": "#6f006f"},
+	g = {"id" : 6, "cx": 200, "cy": 375, "color": "#ffffff"},
+	h = {"id" : 7, "cx": 250, "cy": 300, "color": "#ffff7f"},
+	i = {"id" : 8, "cx": 575, "cy": 250, "color": "#7f00ff"},
+	j = {"id" : 9, "cx": 750, "cy": 350, "color": "#00ff5f"};
+	nodes.push(a,b,c,d,e,f,g,h,i,j);
+	links.push({"source":b,"target":a},
+    {"source":b,"target":c},
+	{"source":b,"target":f},
+    {"source":c,"target":a},
+    {"source":c,"target":e},
+    {"source":d,"target":a},
+    {"source":d,"target":e},
+    {"source":d,"target":f},
+    {"source":e,"target":f},
+    {"source":f,"target":j},
+	{"source":g,"target":h},
+    {"source":h,"target":i},
+    {"source":i,"target":j},
+    {"source":j,"target":h});
+  }
+  start(10);
+}, 0);
+
+var colorTab = ["#ff0000", "#00ff00", "#002fff","#ffff00", "#00ffff", "#6f006f", "#ffffff", "#ffff7f", "#7f00ff", "#00ff5f"];
+
+setTimeout(function() {
+	d3.selectAll(".node").each(function(){
+		d3.select(this).attr("fill", function (d) {
+			return "#"+ rybColorMixer.rybToRgb(colorTab[d.id], { hex: true});
+		});
+	});
+}, 1000);	
+
+setTimeout(function(){
+	d3.selectAll(".node").each(function(){
+		d3.select(this).attr("fill", function (d) {
+			if(d.id<3){
+				return "#"+ rybColorMixer.rybToRgb(colorTab[0], { hex: true});
+			}
+			
+			if(d.id>2 && d.id<5){
+				return "#"+ rybColorMixer.rybToRgb(colorTab[4], { hex: true});	
+			}
+			
+			if(d.id>4 && d.id<8){
+				return "#"+ rybColorMixer.rybToRgb(colorTab[3], { hex: true});
+			}
+			
+			if(d.id>7 && d.id<10){
+				return "#"+ rybColorMixer.rybToRgb(colorTab[8], { hex: true});
+			}
+		});
+	});
+}, 2000);
+
+setTimeout(function(){
+	d3.selectAll(".node").each(function(d){
+		if(d.id < 3){
+			d3.select(this).transition().duration(500).attr("cx", 270).attr("cy",150);
+			d.cx=270;
+			d.cy=150;
+			nodes.splice(1, 2);
+			links.shift(); 
+			links.pop();
+		}	
+		
+		if(d.id>2 && d.id<5){
+			d3.select(this).transition().duration(500).attr("cx", 700).attr("cy",150);
+			d.cx=700;
+			d.cy=150;
+			nodes.splice(4, 4);
+			links.shift(); 
+			links.pop();
+		}
+		
+		if(d.id>4 && d.id<8){
+			d3.select(this).transition().duration(500).attr("cx", 270).attr("cy",400);
+			d.cx=270;
+			d.cy=400;
+			nodes.splice(5, 7);
+			links.shift(); 
+			links.pop();
+			
+		}
+		
+		if(d.id>7 && d.id<10){
+			d3.select(this).transition().duration(500).attr("cx", 700).attr("cy",400);
+			d.cx=700;
+			d.cy=400;
+			nodes.splice(9, 9);
+			links.shift(); 
+			links.pop();
+		}
+		});
+}, 3000);
+/*
+setTimeout(function(){
+			d3.selectAll(".node").each(function(d){
+		if(d.id < 3){
+			
+		}	
+		
+		if(d.id>2 && d.id<5){
+			d.cx=700;
+			d.cy=150;
+			
+		}
+		
+		if(d.id>4 && d.id<8){
+			d.cx=270;
+			d.cy=400;
+			
+		}
+		
+		if(d.id>7 && d.id<10){
+			d.cx=700;
+			d.cy=400;
+			
+		}
+		});
+			
+			
+			
+},5000);*/
+
+function start(r) {
+  link = link.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });
+  link.enter().insert("line", ".node").attr("class", "link");
+  link.exit().remove();
+
+  node = node.data(force.nodes(), function(d) { return d.id;});
+  node.enter().append("circle").attr("class", function(d) { return "node " + d.id; })
+								.attr("r", r)
+								.attr("id", function(d){ return d.id;});
+  node.exit().remove();
+
+  force.start();
+}
+
+function tick() {
+  node.attr("cx", function(d) { return d.cx; })
+      .attr("cy", function(d) { return d.cy; })
+
+  link.attr("x1", function(d) { return d.source.cx; })
+      .attr("y1", function(d) { return d.source.cy; })
+      .attr("x2", function(d) { return d.target.cx; })
+      .attr("y2", function(d) { return d.target.cy; });
+}
+/*  
+d3.json("data/animation.json", function(error, json) {
+  if (error) throw error;
+graph=json;  
+force = d3.layout.force()
+    .nodes(json.nodes)
+    .links(json.links)
+    .size([d3.select("#svg1").style("width"), d3.select("#svg1").style("height")])
+	.start();
+   
+link = d3.select("#svg1").selectAll(".link")
+      .data(json.links)
+    .enter().append("line")
+      .attr("class", "link");
+
+node = d3.select("#svg1").selectAll(".node")
+      .data(json.nodes)
+    .enter().append("g")
+      .attr("class", "node")
+	  .call(force.drag);
+	  
+node.append("circle").attr({
+		id: function(d){return d.id;},
+		r: 10,
+		cx: function(d){return d.cx;},
+		cy: function(d){return d.cy;},
+		class: "circle"
+	});
+
+node.append("title").text(function(d) {return d.id;});
+
+link.attr({
+		x1: function(d) { return d.source.cx; },
+		y1: function(d) { return d.source.cy; },
+		x2: function(d) { return d.target.cx; },
+		y2: function(d) { return d.target.cy; }	
+});
+
+
+
+
+
+
+});
+function tick() {
+d3.selectAll(".node").each(function(){
+	d3.select(this).attr("cx", function(d) { return d.cx; })
+					.attr("cy", function(d) { return d.cy; });
+});	
+
+d3.selectAll(".link").attr("x1", function(d) { return d.source.cx; })
+					  .attr("y1", function(d) { return d.source.cy; })
+					  .attr("x2", function(d) { return d.target.cx; })
+					  .attr("y2", function(d) { return d.target.cy; });
+}
+var colorTab = ["#ff0000", "#00ff00", "#002fff","#ffff00", "#00ffff", "#6f006f", "#ffffff", "#ffff7f", "#7f00ff", "#00ff5f"];
+
+setTimeout(function(){
+	d3.selectAll(".circle").each(function(){
+		d3.select(this).attr("fill", function (d) {
+			return "#"+ rybColorMixer.rybToRgb(colorTab[d.id], { hex: true});
+		});
+	});
+
+}, 2000); 
+
+setTimeout(function(){
+	d3.selectAll(".circle").each(function(){
+		d3.select(this).attr("fill", function (d) {
+			if(d.id<3){
+				return "#"+ rybColorMixer.rybToRgb(colorTab[0], { hex: true});
+			}
+			
+			if(d.id>2 && d.id<5){
+				return "#"+ rybColorMixer.rybToRgb(colorTab[4], { hex: true});	
+			}
+			
+			if(d.id>4 && d.id<8){
+				return "#"+ rybColorMixer.rybToRgb(colorTab[3], { hex: true});
+			}
+			
+			if(d.id>7 && d.id<10){
+				return "#"+ rybColorMixer.rybToRgb(colorTab[8], { hex: true});
+			}
+		});
+	});
+
+}, 5000);
+
+setTimeout(function(){
+	d3.selectAll(".circle").each(function(d){
+		if(d.id < 3){
+			d3.select(this).transition().duration(500).attr("cx", 270).attr("cy",150);
+			if(d.id!==0){
+				
+				d3.select(this).remove;
+			} else {
+				d3.select(this).attr("r", 15);
+			}
+		}	
+		
+		if(d.id>2 && d.id<5){
+			d3.select(this).transition().duration(500).attr("cx", 700).attr("cy",150);
+			if(d.id!==3){
+				d3.select(this).remove;
+			}
+			else {
+				d3.select(this).attr("r", 15);
+			}
+		}
+		
+		if(d.id>4 && d.id<8){
+			d3.select(this).transition().duration(500).attr("cx", 270).attr("cy",400);
+			if(d.id!==5){
+				d3.select(this).remove;
+			}
+			else {
+				d3.select(this).attr("r", 15);
+			}
+		}
+		
+		if(d.id>7 && d.id<10){
+			d3.select(this).transition().duration(500).attr("cx", 700).attr("cy",400);
+			if(d.id===8){
+				d3.select(this).attr("r", 15);
+			}
+			else {
+				d3.select(this).remove;
+				
+			}
+		}
+
+	});	
+force.start();	
+}, 8000);
+/*var g = d3.select("#svg1").append("g");
+
+g.append("circle").attr({
+	r: 10,
+	cx: 150,
+	cy: 220,
+	id: "c1",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 350,
+	cy: 85,
+	id: "c2",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 650,
+	cy: 425,
+	id: "c3",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 450,
+	cy: 350,
+	id: "c4",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 350,
+	cy: 250,
+	id: "c5",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 200,
+	cy: 375,
+	id: "c6",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 250,
+	cy: 150,
+	id: "c7",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 575,
+	cy: 250,
+	id: "c8",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 750,
+	cy: 350,
+	id: "c9",
+	fill: "grey"
+});
+g.append("circle").attr({
+	r: 10,
+	cx: 650,
+	cy: 150,
+	id: "c0",
+	fill: "grey"
+});
+var colorTab = ["#ff0000", "#00ff00", "#002fff","#ffff00", "#00ffff", "#6f006f", "#ffffff", "#ffff7f", "#7f00ff", "#00ff5f"];
+
+setTimeout(function(){
+	for(var i = 0; i < 10; i++){
+		d3.select("#c"+(i)).attr("fill", function (d) { return"#" +(rybColorMixer.rybToRgb(colorTab[i], { hex: true}))});
+	}
+}, 2000);
+
+setTimeout(function(){
+	for(var i = 0; i < 10; i++){
+		if(i<3){
+			d3.select("#c"+(i)).attr("fill", function (d) { return"#" +(rybColorMixer.rybToRgb(colorTab[0], { hex: true}))});
+		}
+		
+		if(i>2 && i<5){
+			d3.select("#c"+(i)).attr("fill", function (d) { return"#" +(rybColorMixer.rybToRgb(colorTab[4], { hex: true}))});
+		}
+		
+		if(i>4 && i<8){
+			d3.select("#c"+(i)).attr("fill", function (d) { return"#" +(rybColorMixer.rybToRgb(colorTab[3], { hex: true}))});
+		}
+		
+		if(i>7 && i<10){
+			d3.select("#c"+(i)).attr("fill", function (d) { return"#" +(rybColorMixer.rybToRgb(colorTab[8], { hex: true}))});
+		}
+	}
+}, 5000);
+
+setTimeout(function(){
+	for(var i = 0; i < 10; i++){
+		if(i<3){
+			d3.select("#c"+(i)).transition().duration(500).attr("cx", 270).attr("cy",150);
+			if(i!==0){
+				d3.select("#c"+(i)).remove;
+			} else {
+				d3.select("#c"+(i)).attr("r", 15);
+			}
+		}
+		
+		if(i>2 && i<5){
+			d3.select("#c"+(i)).transition().duration(500).attr("cx", 700).attr("cy",150);
+			if(i!==3){
+				d3.select("#c"+(i)).remove;
+			}
+			else {
+				d3.select("#c"+(i)).attr("r", 15);
+			}
+		}
+		
+		if(i>4 && i<8){
+			d3.select("#c"+(i)).transition().duration(500).attr("cx", 270).attr("cy",400);
+			if(i!==5){
+				d3.select("#c"+(i)).remove;
+			}
+			else {
+				d3.select("#c"+(i)).attr("r", 15);
+			}
+		}
+		
+		if(i>7 && i<10){
+			d3.select("#c"+(i)).transition().duration(500).attr("cx", 700).attr("cy",400);
+			if(i!==8){
+				d3.select("#c"+(i)).remove;
+			}
+			else {
+				d3.select("#c"+(i)).attr("r", 15);
+			}
+		}
+	}
+
+}, 8000);*/
+</script>
+</body>

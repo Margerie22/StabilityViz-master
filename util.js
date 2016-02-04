@@ -36,7 +36,7 @@ function play() {
       buttonPlay.classed("active", true);
       buttonPlay.property("textContent", "Pause");
       automaticWalkInterval = setInterval(function () {walk(time+getSpeedWalk());}, 500); //The walkers move every 500 ms
-      showEmptyBarChart(); 
+      showEmptyBarChart(height/2); 
     }
     else {
       alert("Please color at least one node before playing the animation");
@@ -132,7 +132,7 @@ function update() {
       .attr("title", function(d) { return d.nbWalkers[0] +"/"+d.nbWalkers[1] +"/"+d.nbWalkers[2] });
   }
   
-  fillBarChart();
+  fillBarChart(height/2);
 
 }
 
@@ -236,28 +236,4 @@ function initColorNode(element) {
 }   
 
 
-function resize(){
-    
-    var width = document.getElementById("graphBox").clientWidth; 
-    var height = window.innerHeight*2/3; 
 
-    
-    svgGraph.attr('width', width);
-    svgGraph.attr('height', height);
-    force.size([width, height]).resume();
-	
-	svgBarChart.attr('width', width);
-    svgBarChart.attr('height', height);
-	var i = 0;
-	d3.selectAll('.empty_bars').each(function(){
-		d3.select(this).attr("x", (width/(graph.nodes.length+1)+width/((graph.nodes.length+1)*(graph.nodes.length+1))) * i)
-					   .attr("width", width/(graph.nodes.length+1));
-		i = i+1;			   
-	}); 
-	var i = 0;
-	d3.selectAll('.filled_bars').each(function(element){
-		d3.select(this).attr("x", (width/(graph.nodes.length+1)+width/((graph.nodes.length+1)*(graph.nodes.length+1))) * i)
-					   .attr("width", width/(graph.nodes.length+1));
-		i = i+1;
-	}); 
-} 

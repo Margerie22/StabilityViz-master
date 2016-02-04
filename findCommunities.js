@@ -21,7 +21,7 @@ function findCommunities(t) {
  
   communities = [];
   this.t = t;
-  
+  console.log(t);
   totalWeight = 0; // Compute the total weigh of the graph
   for(var iLink = 0; iLink <  graph.links.length; iLink++) { 
     totalWeight += graph.links[iLink].value;                  
@@ -113,6 +113,7 @@ function modularity(g, layer) {
             }
         }
     }
+	console.log(t);
     return mod;
 }
 
@@ -200,7 +201,7 @@ function oneLevel(g, layer) {
           }
         }
 
-        // Compute the neighbouring community for the node that guarantee the best modularity
+        // Compute the neighbouring community for the node that guarantees the best modularity
         // Default choice for future insertion is the former community
         var bestComm = nodeComm;
         var bestIncrease = 0;
@@ -259,6 +260,10 @@ function findFinalCommunities() {
   }
 }
 
+function nbCommunities(t){
+	return community[t].length;
+}
+
 // Color the nodes according to the communities given by the graph
 var comColors = d3.scale.category20();
 function colorByCommunities() {
@@ -277,5 +282,17 @@ function colorByCommunities() {
     
    /* node.transition()
         .style("fill", function (d) {return comColors(communities[0][d.id])});*/
+}function precisionCommunitiesMenu(){
+	d3.select("#dark_layer").classed("overlay",true);
+	d3.select("#choicePrecision").property("style", "visibility : visible");
+	
+
 }
-  
+
+function choosePrecisionCommunities(){
+	findCommunities(parseFloat(document.getElementById('ComNb').value));
+	console.log(document.getElementById('ComNb').value)
+	d3.select("#dark_layer").classed("overlay",false);
+	d3.select("#choicePrecision").property("style", "visibility : hidden");
+	
+}

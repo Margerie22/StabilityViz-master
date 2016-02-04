@@ -29,6 +29,9 @@ rect.selection {
   color: white; 
 }
 
+body, html {height:100%;}
+div.wrap {height:100%; overflow:hidden;}
+
 .menu {
   float:up;
 }
@@ -43,7 +46,7 @@ rect.selection {
 }
 
 .slider {
-  width: 720px; 
+  width: 605px; 
   overflow: hidden;
   position : relative;
 
@@ -54,7 +57,7 @@ rect.selection {
 }
 
 .slider.right {
-  height: 584px;
+  height: 504px;
 
 }
 
@@ -65,22 +68,23 @@ rect.selection {
   -moz-transition: 0.5s left;
   -ms-transition: 0.5s left;
   -o-transition: 0.5s left;
-  width : inherit;
+	width:inherit;
   list-style: none;
   margin: 0; padding: 0;
 }
 
-.slider > ul > li {
+.slider ul li {
   float: left;
-  width: 720px;
+  width: 635px;
 }
 
 .slider.left > ul > li {
-  height: 400px;  
+  height: 504px;
 }
 
 .slider.right > ul > li {
-  min-width: 10%;  
+	min-width: 10%; 
+	
 }
 
 .headerSlider, .headerBox {
@@ -101,4 +105,60 @@ rect.selection {
 
 .graphBox {
   height : 470px;
+}
+
+
+.overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+.style-1{
+  position: absolute;
+  display: block;
+  margin: 0;
+  width: 31%;
+  left:35%;
+  top:35%;
+  padding: 15px;
+  border: 5px solid white;
+   border-style:dashed;
+   border-dasharray:3px;
+  z-index: 11;
+}
+input[type="text"] {
+ 
+  margin: 0;  
+  font-family: sans-serif;
+  font-size: 18px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+}
+input[type="text"]:focus {
+  outline: none;
+}
+
+.style-1 input[type="text"] {
+  padding: 10px;
+  border: solid 1px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+.style-1 input[type="text"]:focus,
+.style-1 input[type="text"].focus {
+  border: solid 1px #707070;
+  box-shadow: 0 0 15px 10px #e4e4e4;
+}
+
+#choice {
+	border-radius: 5px;
+    border: 0;
+    width: 80px;
+    height:25px;
+    font-family: Tahoma;
+
 }

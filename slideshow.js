@@ -3,7 +3,7 @@ var currPosSlide = 0;
 // Change the left slide and the right animation in the help page
 function changeSlide(nextSlide) {
   currPosSlide = nextSlide;
-  sliders[1].goTo(nextSlide);
+  sliders[0].goTo(nextSlide);
   
   reinitialization();
   d3.select("#tailGraph").property("style", "visibility : visible");
@@ -43,10 +43,12 @@ function changeSlide(nextSlide) {
     graph.X0[2][0] = graph.nodes[0].nbWalkers[2];
     nbWalkerTot += 100;
     graph.nodes[0].color = "#0000ff";   
-   
+	
+    svgBarChart = d3.select("#s2")
+	.attr("width", width)
+    .attr("height", height/2);
   }
   else if(nextSlide == 2) {
-  
     // Color the nodes in a bad partition of communities
     
     for(var i = 0; i < graph.nodes.length; i++) {
@@ -68,9 +70,10 @@ function changeSlide(nextSlide) {
         nbWalkerTot += 100;
         graph.nodes[i].color = "#0000ff";
       }
-    }  
-
-
+    } 
+	svgBarChart = d3.select("#s3")
+	.attr("width", width)
+    .attr("height", height/2);
   }
   else if(nextSlide == 3) {
   
@@ -97,7 +100,9 @@ function changeSlide(nextSlide) {
       }
          
     }  
-
+	svgBarChart = d3.select("#s4")
+    .attr("width", width)
+    .attr("height", height/2);
   }
   
   update();

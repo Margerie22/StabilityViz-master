@@ -3,13 +3,18 @@
 <head>
 <link rel="stylesheet" type"text/css" href="main.css">
 <link rel="stylesheet" href="w3.css">
+<link rel="stylesheet" href="style.css" type="text/css" media="screen">
 <style>
+
+body, html {height:90%;}
+div.wrap {height:90%; overflow:hidden;}
 #background {
   position: fixed;
   top: -50%; 
   left: -50%; 
   width: 200%;
   height: 200%;
+
 }
 #background img {
   position: absolute;
@@ -20,10 +25,12 @@
   margin: auto; 
   min-width: 50%;
   min-height: 50%;
+    overflow:hidden;
+	z-index:-1;
 }
 
 .title {
-  position: relative;
+  position: absolute;
   font-family: Copperplate Gothic Light;
   text-align: center;
   height:200px;
@@ -43,17 +50,60 @@
   text-align: center;
 }
 
+.center{
+	position: absolute;
+	left:35%;
+  top:35%;
+  display:block;
+}
+
+
 </style>
 </head>
 <body>
 <div id="background">
 <img src="Intro.png"></img>
 </div>
-<div class="title">Gathering useful information from networks is key</div>
-<div id="container">
-<img src="enter2.png" id="button"></img>
+<div id="wrap">
+
+<div id="container" >
+<img src="path4136-1.png" id="tuto" style="max-height:25%; position:absolute; left:20%; top:40%"></img>
+<img src="path4136-2.png" id="anim" style="max-height:25%; position:absolute; left:42%; top:60%"></img>
+<img src="path4136-3.png" id="tool" style="max-height:25%; position:absolute; left:65%; top:40%"></img>
 </div>
-</body>
+        
+
+</div>
+<script src="lib/d3.min.js"></script>
 <script>
 
+d3.select("#tuto").on("mouseover", function(){
+		d3.select(this).attr("style", "max-height : 125%; position:absolute; left:15%; top:35%");
+}).on("click", function(){
+		location.reload();
+		location.href='help.html';
+}).on("mouseout", function(){
+		d3.select("#tuto").attr("style", "max-height : 25%; position:absolute; left:20%; top:40%");
+});
+
+d3.select("#anim").on("mouseover", function(){
+		d3.select(this).property("style", "max-height:125%; position:absolute; left:37%; top:55%");
+}).on("click", function(){
+		location.reload();
+		location.href='Animation.html';
+}).on("mouseout", function(){
+		d3.select("#anim").attr("style", "max-height : 25%; position:absolute; left:42%; top:60%");
+});
+
+d3.select("#tool").on("mouseover", function(){
+		d3.select(this).property("style", "max-height:125%; position:absolute; left:62%; top:35%");
+}).on("click", function(){
+		location.reload();
+		location.href='index.html';
+}).on("mouseout", function(){
+		d3.select("#tool").attr("style", "max-height : 25%; position:absolute; left:65%; top:40%");
+});
+
+
 </script>
+</body>

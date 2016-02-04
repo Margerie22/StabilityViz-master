@@ -4,7 +4,8 @@ var newHeight = 0;
            
        
      
-function showEmptyBarChart(){
+function showEmptyBarChart(h){
+  var height=h;
   
   margin.left = ((width - (width/(graph.nodes.length+1)+width/((graph.nodes.length+1)*(graph.nodes.length+1))) * (graph.nodes.length-1) - width/(graph.nodes.length+1))/2);
   margin.top = height * 10/100;
@@ -66,7 +67,7 @@ function showEmptyBarChart(){
       .style("stroke", "black");     
   });
   
-  fillBarChart();
+  fillBarChart(height);
 }
            
            
@@ -77,7 +78,7 @@ function clearBarChart(){
   d3.selectAll('.filled_bars').remove();
 }
      
-function fillBarChart(){
+function fillBarChart(height){
 
   d3.selectAll('.node').each(function(n){
    
